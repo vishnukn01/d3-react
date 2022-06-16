@@ -5,7 +5,7 @@ import TreeViewComponent from "./pages/TreeViewComponent";
 function App() {
   return (
     <div className="center-align">
-      <TreeViewComponent />
+      <TreeViewComponent diameter={800} />
     </div>
   );
 }
