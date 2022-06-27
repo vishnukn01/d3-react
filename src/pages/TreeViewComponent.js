@@ -1,9 +1,35 @@
 import React, { useEffect, useRef } from "react";
 import * as d3 from "d3";
+import PropTypes from "prop-types";
 
 function TreeViewComponent(props) {
-  var pubs = props.pubs;
+  var pubs = props.data;
   var diameter = props.diameter;
+  var nodeSize;
+
+  if (props.nodeType === "circle") {
+    if (props.nodeSize === "small") {
+      nodeSize = 4.5;
+    }
+    if (props.nodeSize === "medium") {
+      nodeSize = 14.5;
+    }
+    if (props.nodeSize === "large") {
+      nodeSize = 24.5;
+    }
+  }
+
+  if (props.nodeType === "rect") {
+    if (props.nodeSize === "small") {
+      nodeSize = 4.5;
+    }
+    if (props.nodeSize === "medium") {
+      nodeSize = 14.5;
+    }
+    if (props.nodeSize === "large") {
+      nodeSize = 24.5;
+    }
+  }
 
   var margin = { top: 20, right: 120, bottom: 20, left: 120 },
     width = diameter,
@@ -78,12 +104,24 @@ function TreeViewComponent(props) {
           //.attr("transform", function(d) { return "rotate(" + (d.x - 90) + ")translate(" + d.y + ")"; })
           .on("click", click);
 
-        nodeEnter
-          .append("circle")
-          .attr("r", 1e-6)
-          .style("fill", function (d) {
-            return d._children ? "lightsteelblue" : "#fff";
-          });
+        if (props.nodeType === "circle") {
+          nodeEnter
+            .append("circle")
+            .attr("r", 1e-6)
+            .style("fill", function (d) {
+              return d._children ? "lightsteelblue" : "#fff";
+            });
+        }
+
+        if (props.nodeType === "rect") {
+          nodeEnter
+            .append("rect")
+            .attr("width", 1e-6)
+            .attr("height", 1e-6)
+            .style("fill", function (d) {
+              return d._children ? "lightsteelblue" : "#fff";
+            });
+        }
 
         nodeEnter
           .append("text")
@@ -104,12 +142,24 @@ function TreeViewComponent(props) {
             return "rotate(" + (d.x - 90) + ")translate(" + d.y + ")";
           });
 
-        nodeUpdate
-          .select("circle")
-          .attr("r", 4.5)
-          .style("fill", function (d) {
-            return d._children ? "lightsteelblue" : "#fff";
-          });
+        if (props.nodeType === "circle") {
+          nodeUpdate
+            .select("circle")
+            .attr("r", nodeSize)
+            .style("fill", function (d) {
+              return d._children ? "lightsteelblue" : "#fff";
+            });
+        }
+
+        if (props.nodeType === "rect") {
+          nodeUpdate
+            .select("rect")
+            .attr("width", nodeSize)
+            .attr("height", nodeSize)
+            .style("fill", function (d) {
+              return d._children ? "lightsteelblue" : "#fff";
+            });
+        }
 
         nodeUpdate
           .select("text")
@@ -190,7 +240,18 @@ function TreeViewComponent(props) {
       //   }
       // }
     }
-  }, [diagonal, diameter, duration, height, i, root, tree, width]);
+  }, [
+    diagonal,
+    diameter,
+    duration,
+    height,
+    i,
+    root,
+    tree,
+    width,
+    nodeSize,
+    props.nodeType,
+  ]);
 
   return (
     <>
@@ -199,5 +260,9 @@ function TreeViewComponent(props) {
     </>
   );
 }
+
+TreeViewComponent.propTypes = {
+  nodeType: PropTypes.string,
+};
 
 export default TreeViewComponent;

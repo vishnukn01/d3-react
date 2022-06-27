@@ -2,7 +2,8 @@
   cursor: pointer;
 }
 
-.node circle {
+.node circle,
+.node rect {
   fill: #fff;
   stroke: steelblue;
   stroke-width: 1.5px;

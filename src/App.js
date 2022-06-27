@@ -133,7 +133,12 @@ function App() {
 
   return (
     <div className="center-align">
-      <TreeViewComponent diameter={800} pubs={pubs} />
+      <TreeViewComponent
+        data={pubs}
+        diameter={800}
+        nodeType="rect"
+        nodeSize="small"
+      />
     </div>
   );
 }
